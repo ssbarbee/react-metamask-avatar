@@ -24,6 +24,10 @@ Create a React package in Typescript to provide rendering of Metamask jazzicon a
 
 ```yarn add react-metamask-avatar```
 
+## Demo
+
+Hosted [storybook](https://ssbarbee.github.io/react-metamask-avatar)
+
 ## Usage 📚
 
 ```tsx

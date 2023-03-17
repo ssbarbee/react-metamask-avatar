@@ -28,6 +28,8 @@ jobs:
         run: make generate-coverage-badges
       - name: Build release
         run: make build
+      - name: Release Storybook demo
+        run: make release-storybook
       - name: Release UI
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PUBLISHING_TOKEN }}

@@ -6,6 +6,8 @@
   "module": "dist/esm/index.js",
   "types": "dist/esm/types",
   "scripts": {
+    "predeploy": "yarn build:storybook",
+    "deploy:storybook": "gh-pages -d storybook-static",
     "prebuild": "yarn code-quality:check && rm -rf dist",
     "build": "rollup -c --bundleConfigAsCjs",
     "prebuild:storybook": "yarn code-quality:check && rm -rf storybook-static",
@@ -34,7 +36,7 @@
   "bugs": {
     "url": "https://github.com/ssbarbee/react-metamask-avatar/issues"
   },
-  "homepage": "https://github.com/ssbarbee/react-metamask-avatar#readme",
+  "homepage": "https://ssbarbee.github.io/react-metamask-avatar",
   "devDependencies": {
     "@babel/core": "7.20.12",
     "@commitlint/cli": "13.2.1",
@@ -76,6 +78,7 @@
     "eslint-plugin-simple-import-sort": "8.0.0",
     "eslint-plugin-storybook": "0.6.6",
     "eslint-plugin-unused-imports": "2.0.0",
+    "gh-pages": "5.0.0",
     "husky": "8.0.3",
     "is-ci": "3.0.1",
     "istanbul-badges-readme": "1.8.4",
