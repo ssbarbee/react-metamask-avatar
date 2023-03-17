@@ -6,8 +6,7 @@
   "module": "dist/esm/index.js",
   "types": "dist/esm/types",
   "scripts": {
-    "predeploy": "yarn build:storybook",
-    "deploy:storybook": "gh-pages -d storybook-static",
+    "deploy:storybook": "yarn build:storybook && gh-pages -d storybook-static",
     "prebuild": "yarn code-quality:check && rm -rf dist",
     "build": "rollup -c --bundleConfigAsCjs",
     "prebuild:storybook": "yarn code-quality:check && rm -rf storybook-static",
