@@ -2,6 +2,14 @@
   "name": "react-metamask-avatar",
   "version": "1.2.0",
   "description": "A React component for rendering MetaMask avatars based on account address",
+  "keywords": [
+    "react",
+    "component",
+    "web3",
+    "metamask",
+    "avatar",
+    "typescript"
+  ],
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/types",
