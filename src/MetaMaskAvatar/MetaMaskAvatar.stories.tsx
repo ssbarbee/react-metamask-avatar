@@ -15,3 +15,9 @@ export const Default = Template.bind({});
 Default.args = {
   address: '0xb01F14d1C9000D453241221EB54648F1C378c970',
 };
+
+export const VariantSize24 = Template.bind({});
+VariantSize24.args = {
+  address: '0xb01F14d1C9000D453241221EB54648F1C378c970',
+  size: 24,
+};
