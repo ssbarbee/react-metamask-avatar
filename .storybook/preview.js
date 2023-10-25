@@ -1,6 +1,6 @@
 import React from 'react';
-import { addDecorator } from '@storybook/react';
 import darkTheme from './themes/dark';
+import lightTheme from './themes/light';
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
@@ -14,16 +14,31 @@ export const parameters = {
   docs: {
     theme: darkTheme,
   },
+  backgrounds: {
+    default: 'dark',
+    values: [
+      {
+        name: 'dark',
+        value: darkTheme.appBg,
+      },
+      {
+        name: 'light',
+        value: lightTheme.appBg,
+      },
+    ],
+  },
 };
 
-addDecorator((story) => {
-  return (
-    <div
-      style={{
-        padding: 24,
-      }}
-    >
-      {story()}
-    </div>
-  );
-});
+export const decorators = [
+  (story) => {
+    return (
+      <div
+        style={{
+          padding: 24,
+        }}
+      >
+        {story()}
+      </div>
+    );
+  },
+];
