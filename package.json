@@ -13,6 +13,12 @@
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/types",
+  "files": [
+    "src/**/*.*",
+    "dist/**/*.*",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "deploy:storybook": "yarn build:storybook && gh-pages -d storybook-static",
     "prebuild": "yarn code-quality:check && rm -rf dist",
