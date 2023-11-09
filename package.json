@@ -175,6 +175,10 @@
             {
               "type": "test",
               "release": "patch"
+            },
+            {
+              "type": "breaking",
+              "release": "major"
             }
           ],
           "parserOpts": {
