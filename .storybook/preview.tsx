@@ -1,6 +1,6 @@
-import React from 'react';
 import darkTheme from './themes/dark';
 import lightTheme from './themes/light';
+import React from 'react';
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
@@ -30,7 +30,7 @@ export const parameters = {
 };
 
 export const decorators = [
-  (story) => {
+  (story: () => React.ReactNode) => {
     return (
       <div
         style={{

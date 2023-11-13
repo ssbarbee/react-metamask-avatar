@@ -14,9 +14,9 @@ export const Default: StoryObj<typeof MetaMaskAvatar> = {
   },
 };
 
-export const VariantSize24: StoryObj<typeof MetaMaskAvatar> = {
+export const VariantSize16: StoryObj<typeof MetaMaskAvatar> = {
   args: {
     address: '0xb01F14d1C9000D453241221EB54648F1C378c970',
-    size: 24,
+    size: 16,
   },
 };
