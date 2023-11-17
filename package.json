@@ -10,9 +10,9 @@
     "avatar",
     "typescript"
   ],
+  "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/types",
-  "type": "module",
   "files": [
     "src/**/*.*",
     "!src/**/*.stories.*",
@@ -116,9 +116,6 @@
     "typescript": "4.9.4"
   },
   "peerDependencies": {
-    "@emotion/react": "11.7.1",
-    "@emotion/styled": "11.6.0",
-    "@metamask/jazzicon": "2.0.0",
     "react": ">=17.0.2",
     "react-dom": ">=17.0.2"
   },
