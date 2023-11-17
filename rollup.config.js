@@ -12,13 +12,9 @@ export default [
     input: 'src/index.ts',
     output: [
       {
-        file: packageJson.main,
-        format: 'cjs',
-        sourcemap: true,
-      },
-      {
         file: packageJson.module,
         format: 'esm',
+        interop: 'auto',
         sourcemap: true,
       },
     ],
@@ -30,7 +26,7 @@ export default [
       terser(),
       bundleSize(),
     ],
-    external: ['react', 'react-dom', 'styled-components'],
+    external: ['react', 'react-dom', '@emotion/react', '@emotion/styled', '@metamask/jazzicon'],
   },
   {
     input: 'dist/esm/types/index.d.ts',

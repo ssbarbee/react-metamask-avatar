@@ -16,13 +16,15 @@ The `MetaMaskAvatar` component is a React functional component that takes in a r
 
 ## Installation 📦
 
+Install the package and required peer dependencies...
+
 ### npm
 
-```npm install react-metamask-avatar```
+```npm install react-metamask-avatar @emotion/react @emotion/styled @metamask/jazzicon```
 
 ### yarn
 
-```yarn add react-metamask-avatar```
+```yarn add react-metamask-avatar @emotion/react @emotion/styled @metamask/jazzicon```
 
 ## Demo
 
