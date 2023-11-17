@@ -31,5 +31,5 @@ release:
 	yarn release
 
 release-storybook:
-    yarn deploy:storybook
+	yarn deploy:storybook
 

@@ -29,7 +29,14 @@ jobs:
       - name: Build release
         run: make build
       - name: Release Storybook demo
-        run: make release-storybook
+        run: |
+          git config --global user.email "ssbarbee@gmail.com"
+          git config --global user.name "ssbarbee"
+          git config --global credential.helper store
+          echo "https://${{ secrets.GH_PUBLISHING_TOKEN }}:x-oauth-basic@github.com" > ~/.git-credentials
+          make release-storybook
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PUBLISHING_TOKEN }}
       - name: Release UI
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PUBLISHING_TOKEN }}
