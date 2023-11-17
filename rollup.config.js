@@ -30,7 +30,7 @@ export default [
       terser(),
       bundleSize(),
     ],
-    external: ['react', 'react-dom', 'styled-components'],
+    external: ['react', 'react-dom', '@emotion/react', '@emotion/styled', '@metamask/jazzicon'],
   },
   {
     input: 'dist/esm/types/index.d.ts',
