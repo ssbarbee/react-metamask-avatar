@@ -1,0 +1,3 @@
+try{
+var c=__STORYBOOKADDONS__,{addons:t,types:l,mockChannel:O}=__STORYBOOKADDONS__;var g=__STORYBOOKTHEMING__,{CacheProvider:k,ClassNames:R,Global:S,ThemeProvider:b,background:x,color:B,convert:y,create:o,createCache:C,createGlobal:N,createReset:v,css:D,darken:G,ensure:K,ignoreSsrWarning:Y,isPropValid:P,jsx:A,keyframes:E,lighten:H,styled:I,themes:M,typography:j,useTheme:w,withTheme:V}=__STORYBOOKTHEMING__;var s=o({base:"dark",appBorderRadius:4,inputBorderRadius:4,brandTitle:"react-metamask-avatar",brandTarget:"_self"});t.setConfig({theme:s});
+}catch(e){ console.error("[Storybook] One of your manager-entries failed: " + import.meta.url, e); }
