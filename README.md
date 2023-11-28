@@ -14,6 +14,10 @@
 
 The `MetaMaskAvatar` component is a React functional component that takes in a required `address` property of type `string` and an optional `size` property of type `number`. It returns an image avatar of the given Ethereum address provided as a string and renders it within an `AvatarWrapper` component, which can be styled using the `className` property.
 
+## Demo
+
+Hosted [storybook](https://ssbarbee.github.io/react-metamask-avatar)
+
 ## Installation 📦
 
 ### npm
@@ -23,10 +27,6 @@ The `MetaMaskAvatar` component is a React functional component that takes in a r
 ### yarn
 
 ```yarn add react-metamask-avatar```
-
-## Demo
-
-Hosted [storybook](https://ssbarbee.github.io/react-metamask-avatar)
 
 ## Props
 
