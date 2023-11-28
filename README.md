@@ -14,7 +14,7 @@
 
 The `MetaMaskAvatar` component is a React functional component that takes in a required `address` property of type `string` and an optional `size` property of type `number`. It returns an image avatar of the given Ethereum address provided as a string and renders it within an `AvatarWrapper` component, which can be styled using the `className` property.
 
-## Demo
+## Demo 😈
 
 Hosted [storybook](https://ssbarbee.github.io/react-metamask-avatar)
 
@@ -28,7 +28,7 @@ Hosted [storybook](https://ssbarbee.github.io/react-metamask-avatar)
 
 ```yarn add react-metamask-avatar```
 
-## Props
+## Props ℹ️
 
 ### address
 The **required** address property is a **string** of length 42 that represents an Ethereum address. If it is not provided or does not meet the expected length, the component returns null.
@@ -52,7 +52,7 @@ export const App: React.FunctionComponent = () => {
 }
 ```
 
-## FAQ
+## FAQ 🙋❓
 
 ### I want to add custom styling. How can I do that?
 
