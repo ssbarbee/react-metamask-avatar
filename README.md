@@ -63,6 +63,7 @@ Example:
 
 ```tsx
 import React from 'react';
+import styled from '@emotion/styled';
 import { MetaMaskAvatar } from 'react-metamask-avatar';
 
 const SquareMetaMaskAvatar = styled(MetaMaskAvatar)`
