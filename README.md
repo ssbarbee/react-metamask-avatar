@@ -56,7 +56,22 @@ export const App: React.FunctionComponent = () => {
 
 ### I want to add custom styling. How can I do that?
 
-Under the hood `react-metamask-avatar` uses `@emotion/styled`. Therefore, following a [guide](https://emotion.sh/docs/styled#styling-any-component) 
+Via Tailwind - You just need to provide className prop!
+
+Example: 
+
+```tsx
+import React from 'react';
+import { MetaMaskAvatar } from 'react-metamask-avatar';
+
+export const App: React.FunctionComponent = () => {
+    return (
+        <MetaMaskAvatar className="rounded-none" address="0xb01F14d1C9000D453241221EB54648F1C378c970" size={24} />
+    )
+}
+```
+
+Via styled components - Under the hood `react-metamask-avatar` uses `@emotion/styled`. Therefore, following a [guide](https://emotion.sh/docs/styled#styling-any-component) 
 for custom styling emotion elements is the way to go.
 
 Example: 
@@ -76,3 +91,4 @@ export const App: React.FunctionComponent = () => {
     )
 }
 ```
+
