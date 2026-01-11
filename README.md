@@ -37,7 +37,10 @@ The **required** address property is a **string** of length 42 that represents a
 The **optional** size property is a **number** that sets the size of the avatar image in pixels. If not provided, it defaults to **24**.
 
 ### className
-The **optional** className property is a **string** that allows for custom styling using the AvatarWrapper component. It will be added to the className prop of the AvatarWrapper component.
+The **optional** className property is a **string** that allows for custom styling via CSS classes.
+
+### style
+The **optional** style property is a **React.CSSProperties** object that allows for inline style overrides.
 
 ## Usage 📚
 
@@ -56,9 +59,9 @@ export const App: React.FunctionComponent = () => {
 
 ### I want to add custom styling. How can I do that?
 
-Via Tailwind - You just need to provide className prop!
+The component accepts `className` and `style` props for custom styling.
 
-Example: 
+#### Square avatar via style prop
 
 ```tsx
 import React from 'react';
@@ -66,29 +69,36 @@ import { MetaMaskAvatar } from 'react-metamask-avatar';
 
 export const App: React.FunctionComponent = () => {
     return (
-        <MetaMaskAvatar className="rounded-none" address="0xb01F14d1C9000D453241221EB54648F1C378c970" size={24} />
+        <MetaMaskAvatar
+            address="0xb01F14d1C9000D453241221EB54648F1C378c970"
+            size={48}
+            style={{ borderRadius: 0 }}
+        />
     )
 }
 ```
 
-Via styled components - Under the hood `react-metamask-avatar` uses `@emotion/styled`. Therefore, following a [guide](https://emotion.sh/docs/styled#styling-any-component) 
-for custom styling emotion elements is the way to go.
+#### Square avatar via className prop
 
-Example: 
+```css
+/* styles.css */
+.square-avatar {
+    border-radius: 0;
+}
+```
 
 ```tsx
 import React from 'react';
-import styled from '@emotion/styled';
 import { MetaMaskAvatar } from 'react-metamask-avatar';
-
-const SquareMetaMaskAvatar = styled(MetaMaskAvatar)`
-    border-radius: none;
-`;
+import './styles.css';
 
 export const App: React.FunctionComponent = () => {
     return (
-        <SquareMetaMaskAvatar address="0xb01F14d1C9000D453241221EB54648F1C378c970" size={24} />
+        <MetaMaskAvatar
+            address="0xb01F14d1C9000D453241221EB54648F1C378c970"
+            size={48}
+            className="square-avatar"
+        />
     )
 }
 ```
-
