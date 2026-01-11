@@ -9,8 +9,8 @@ permissions:
   id-token: write
 
 jobs:
-  code-quality:
-    name: Code Quality
+  check:
+    name: Check
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -30,38 +30,17 @@ jobs:
             ${{ runner.os }}-node-modules-
       - name: Install dependencies
         run: make install-ci
-      - name: Prettier, Eslint, Typescript check
-        run: make code-quality-check
-
-  test:
-    name: Test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22.17.1'
-          cache: 'yarn'
-      - name: Cache node_modules
-        uses: actions/cache@v4
-        id: cache-node-modules
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-node-modules-
-      - name: Install dependencies
-        run: make install-ci
-      - name: Run tests
-        run: make test-coverage
-      - name: Generate coverage badges
-        run: make generate-coverage-badges
+      - name: Code quality and tests (parallel)
+        run: |
+          make code-quality-check &
+          PID1=$!
+          (make test-coverage && make generate-coverage-badges) &
+          PID2=$!
+          wait $PID1 && wait $PID2
 
   build:
     name: Build
-    needs: [code-quality, test]
+    needs: check
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -89,43 +68,8 @@ jobs:
           name: dist
           path: dist/
 
-  release-storybook:
-    name: Release Storybook
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          persist-credentials: false
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22.17.1'
-          cache: 'yarn'
-      - name: Cache node_modules
-        uses: actions/cache@v4
-        id: cache-node-modules
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-node-modules-
-      - name: Install dependencies
-        run: make install-ci
-      - name: Release Storybook demo
-        run: |
-          git config --global user.email "ssbarbee@gmail.com"
-          git config --global user.name "ssbarbee"
-          git config --global credential.helper store
-          echo "https://${{ secrets.GH_PUBLISHING_TOKEN }}:x-oauth-basic@github.com" > ~/.git-credentials
-          make release-storybook
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_PUBLISHING_TOKEN }}
-
-  release-npm:
-    name: Release npm
+  release:
+    name: Release
     needs: build
     runs-on: ubuntu-latest
     steps:
@@ -155,9 +99,20 @@ jobs:
         with:
           name: dist
           path: dist/
-      - name: Release npm
+      - name: Configure git
+        run: |
+          git config --global user.email "ssbarbee@gmail.com"
+          git config --global user.name "ssbarbee"
+          git config --global credential.helper store
+          echo "https://${{ secrets.GH_PUBLISHING_TOKEN }}:x-oauth-basic@github.com" > ~/.git-credentials
+      - name: Release (storybook + npm in parallel)
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PUBLISHING_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_PUBLISHING_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISHING_TOKEN }}
-        run: make release
+        run: |
+          make release-storybook &
+          PID1=$!
+          make release &
+          PID2=$!
+          wait $PID1 && wait $PID2
