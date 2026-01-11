@@ -64,7 +64,7 @@
     "@rollup/plugin-node-resolve": "15.0.1",
     "@rollup/plugin-typescript": "11.0.0",
     "@semantic-release/git": "10.0.1",
-    "@semantic-release/npm": "9.0.1",
+    "@semantic-release/npm": "12.0.1",
     "@storybook/addon-actions": "7.5.1",
     "@storybook/addon-essentials": "7.5.1",
     "@storybook/addon-interactions": "7.5.1",
@@ -107,7 +107,7 @@
     "rollup-plugin-dts": "5.1.1",
     "rollup-plugin-peer-deps-external": "2.2.4",
     "rollup-plugin-terser": "7.0.2",
-    "semantic-release": "19.0.5",
+    "semantic-release": "24.2.3",
     "semantic-release-cli": "5.4.4",
     "storybook": "7.5.1",
     "typescript": "4.9.4"
@@ -187,7 +187,13 @@
           }
         }
       ],
-      "@semantic-release/npm",
+      [
+        "@semantic-release/npm",
+        {
+          "npmPublish": true,
+          "provenance": true
+        }
+      ],
       "@semantic-release/release-notes-generator",
       [
         "@semantic-release/git",

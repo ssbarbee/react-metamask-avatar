@@ -23,6 +23,14 @@
       "rules": {
         "import/no-anonymous-default-export": "off"
       }
+    },
+    {
+      "files": [
+        "**/*.test.*"
+      ],
+      "rules": {
+        "@typescript-eslint/no-unsafe-call": "off"
+      }
     }
   ],
   "parser": "@typescript-eslint/parser",
