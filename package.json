@@ -1,6 +1,6 @@
 {
   "name": "react-metamask-avatar",
-  "version": "2.1.4",
+  "version": "2.1.5",
   "description": "A React component for rendering MetaMask avatars based on EVM account address",
   "keywords": [
     "react",
