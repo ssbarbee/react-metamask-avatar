@@ -1,63 +1,51 @@
 name: Release
-
 on:
   push:
     branches:
       - main
-
-permissions:
-  contents: write
-  id-token: write   # REQUIRED for npm Trusted Publishing
-
 jobs:
   release:
     name: Release UI
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
           persist-credentials: false
-
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
           node-version: '22.17.1'
           cache: 'yarn'
-          registry-url: https://registry.npmjs.org/
-
       - name: Cache node_modules
         uses: actions/cache@v4
+        id: cache-node-modules
         with:
           path: node_modules
           key: ${{ runner.os }}-node-modules-${{ hashFiles('yarn.lock') }}
-
       - name: Install dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: make install-ci
-
       - name: Prettier check, Eslint check, Typescript check
         run: make code-quality-check
-
       - name: Run tests
         run: make test-coverage
-
       - name: Generate coverage badges
         run: make generate-coverage-badges
-
       - name: Build release
         run: make build
-
       - name: Release Storybook demo
         run: |
           git config --global user.email "ssbarbee@gmail.com"
           git config --global user.name "ssbarbee"
+          git config --global credential.helper store
+          echo "https://${{ secrets.GH_PUBLISHING_TOKEN }}:x-oauth-basic@github.com" > ~/.git-credentials
           make release-storybook
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PUBLISHING_TOKEN }}
-
       - name: Release UI
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PUBLISHING_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_PUBLISHING_TOKEN }}
         run: make release
