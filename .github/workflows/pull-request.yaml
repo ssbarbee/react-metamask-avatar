@@ -5,8 +5,8 @@ on:
       - main
 
 jobs:
-  check:
-    name: Check
+  code-quality:
+    name: Code Quality
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -26,12 +26,31 @@ jobs:
             ${{ runner.os }}-node-modules-
       - name: Install dependencies
         run: make install-ci
-      - name: Code quality and tests (parallel)
-        run: |
-          make code-quality-check &
-          PID1=$!
-          make test-coverage &
-          PID2=$!
-          wait $PID1 && wait $PID2
+      - name: Prettier, Eslint, Typescript check
+        run: make code-quality-check
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.17.1'
+          cache: 'yarn'
+      - name: Cache node_modules
+        uses: actions/cache@v4
+        id: cache-node-modules
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-node-modules-
+      - name: Install dependencies
+        run: make install-ci
+      - name: Run tests
+        run: make test-coverage
       - name: Post test coverage comment
         uses: MishaKav/jest-coverage-comment@main
