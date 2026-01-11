@@ -6,20 +6,132 @@ on:
 
 permissions:
   contents: write
-  id-token: write   # REQUIRED for npm Trusted Publishing
+  id-token: write
 
 jobs:
-  release:
-    name: Release UI
+  code-quality:
+    name: Code Quality
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.17.1'
+          cache: 'yarn'
+      - name: Cache node_modules
+        uses: actions/cache@v4
+        id: cache-node-modules
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('yarn.lock') }}
+      - name: Install dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: make install-ci
+      - name: Prettier, Eslint, Typescript check
+        run: make code-quality-check
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.17.1'
+          cache: 'yarn'
+      - name: Cache node_modules
+        uses: actions/cache@v4
+        id: cache-node-modules
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('yarn.lock') }}
+      - name: Install dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: make install-ci
+      - name: Run tests
+        run: make test-coverage
+      - name: Generate coverage badges
+        run: make generate-coverage-badges
+
+  build:
+    name: Build
+    needs: [code-quality, test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.17.1'
+          cache: 'yarn'
+      - name: Cache node_modules
+        uses: actions/cache@v4
+        id: cache-node-modules
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('yarn.lock') }}
+      - name: Install dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: make install-ci
+      - name: Build
+        run: make build
+      - name: Upload dist artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  release-storybook:
+    name: Release Storybook
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
           persist-credentials: false
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.17.1'
+          cache: 'yarn'
+      - name: Cache node_modules
+        uses: actions/cache@v4
+        id: cache-node-modules
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('yarn.lock') }}
+      - name: Install dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: make install-ci
+      - name: Release Storybook demo
+        run: |
+          git config --global user.email "ssbarbee@gmail.com"
+          git config --global user.name "ssbarbee"
+          git config --global credential.helper store
+          echo "https://${{ secrets.GH_PUBLISHING_TOKEN }}:x-oauth-basic@github.com" > ~/.git-credentials
+          make release-storybook
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PUBLISHING_TOKEN }}
+
+  release-npm:
+    name: Release npm
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: '22.17.1'
           cache: 'yarn'
@@ -33,24 +145,12 @@ jobs:
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: make install-ci
-      - name: Prettier check, Eslint check, Typescript check
-        run: make code-quality-check
-      - name: Run tests
-        run: make test-coverage
-      - name: Generate coverage badges
-        run: make generate-coverage-badges
-      - name: Build release
-        run: make build
-      - name: Release Storybook demo
-        run: |
-          git config --global user.email "ssbarbee@gmail.com"
-          git config --global user.name "ssbarbee"
-          git config --global credential.helper store
-          echo "https://${{ secrets.GH_PUBLISHING_TOKEN }}:x-oauth-basic@github.com" > ~/.git-credentials
-          make release-storybook
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_PUBLISHING_TOKEN }}
-      - name: Release UI
+      - name: Download dist artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - name: Release npm
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PUBLISHING_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_PUBLISHING_TOKEN }}
