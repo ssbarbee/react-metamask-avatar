@@ -33,26 +33,23 @@ jobs:
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: make install-ci
-      - name: Prettier check, Eslint check, Typescript check
-        run: make code-quality-check
-      - name: Run tests
-        run: make test-coverage
-      - name: Generate coverage badges
-        run: make generate-coverage-badges
+      - name: Code quality and tests (parallel)
+        run: |
+          make code-quality-check &
+          (make test-coverage && make generate-coverage-badges) &
+          wait
       - name: Build release
         run: make build
-      - name: Release Storybook demo
+      - name: Release (storybook + npm in parallel)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PUBLISHING_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_PUBLISHING_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISHING_TOKEN }}
         run: |
           git config --global user.email "ssbarbee@gmail.com"
           git config --global user.name "ssbarbee"
           git config --global credential.helper store
           echo "https://${{ secrets.GH_PUBLISHING_TOKEN }}:x-oauth-basic@github.com" > ~/.git-credentials
-          make release-storybook
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_PUBLISHING_TOKEN }}
-      - name: Release UI
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_PUBLISHING_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_PUBLISHING_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISHING_TOKEN }}
-        run: make release
+          make release-storybook &
+          make release &
+          wait

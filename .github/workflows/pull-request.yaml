@@ -27,9 +27,10 @@ jobs:
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: make install-ci
-      - name: Prettier check, Eslint check, Typescript check
-        run: make code-quality-check
-      - name: Run tests
-        run: make test-coverage
+      - name: Code quality and tests (parallel)
+        run: |
+          make code-quality-check &
+          make test-coverage &
+          wait
       - name: Post test coverage comment
         uses: MishaKav/jest-coverage-comment@main
