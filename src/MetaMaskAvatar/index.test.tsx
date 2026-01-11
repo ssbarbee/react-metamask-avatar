@@ -36,4 +36,29 @@ describe('MetaMaskAvatar component', () => {
     const avatarWrapper = screen.getByTestId('MetaMaskAvatar-AvatarWrapper');
     expect(avatarWrapper).toBeInTheDocument();
   });
+
+  test('merges base class with custom className', () => {
+    const address = '0x0000000000000000000000000000000000000000';
+    const className = 'custom-class';
+    render(<MetaMaskAvatar address={address} className={className} />);
+    const avatarWrapper = screen.getByTestId('MetaMaskAvatar-AvatarWrapper');
+    expect(avatarWrapper).toHaveClass('__rma_a7b3__');
+    expect(avatarWrapper).toHaveClass('custom-class');
+  });
+
+  test('applies style prop for inline style overrides', () => {
+    const address = '0x0000000000000000000000000000000000000000';
+    render(<MetaMaskAvatar address={address} style={{ borderRadius: 0 }} />);
+    const avatarWrapper = screen.getByTestId('MetaMaskAvatar-AvatarWrapper');
+    expect(avatarWrapper).toHaveStyle('border-radius: 0');
+  });
+
+  test('injects base styles into document head', () => {
+    const address = '0x0000000000000000000000000000000000000000';
+    render(<MetaMaskAvatar address={address} />);
+    const styleTag = document.getElementById('__rma_styles__');
+    expect(styleTag).toBeInTheDocument();
+    expect(styleTag?.textContent).toContain('border-radius:50%');
+    expect(styleTag?.textContent).toContain('overflow:hidden');
+  });
 });
