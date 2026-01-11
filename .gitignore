@@ -12,3 +12,5 @@ coverage/
 /.yarn/releases/** binary
 /.yarn/plugins/** binary
 .yarn/install-state.gz
+.idea
+.DS_Store
