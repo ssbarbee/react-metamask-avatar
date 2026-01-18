@@ -4,11 +4,19 @@
 
 # react-metamask-avatar
 
-![https://img.shields.io/npm/v/react-metamask-avatar](https://img.shields.io/npm/v/react-metamask-avatar)
-![https://img.shields.io/github/issues-raw/ssbarbee/react-metamask-avatar](https://img.shields.io/github/issues-raw/ssbarbee/react-metamask-avatar)
-![https://img.shields.io/npm/dw/react-metamask-avatar](https://img.shields.io/npm/dw/react-metamask-avatar)
+[![npm version](https://img.shields.io/npm/v/react-metamask-avatar.svg)](https://www.npmjs.com/package/react-metamask-avatar)
+[![npm downloads](https://img.shields.io/npm/dw/react-metamask-avatar.svg)](https://www.npmjs.com/package/react-metamask-avatar)
+[![GitHub issues](https://img.shields.io/github/issues-raw/ssbarbee/react-metamask-avatar.svg)](https://github.com/ssbarbee/react-metamask-avatar/issues)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-🤡 A React component for rendering MetaMask avatars based on account address
+🎭 A React component for rendering MetaMask-style Jazzicon avatars based on Ethereum account address.
+
+## Features ✨
+
+- **Deterministic** - Same address always generates the same avatar
+- **TypeScript-First** - Full type definitions included
+- **Customizable** - Control size, styling via props or CSS
+- **Lightweight** - Minimal bundle impact
 
 ## Overview 🧐
 
@@ -22,11 +30,23 @@ Hosted [storybook](https://ssbarbee.github.io/react-metamask-avatar)
 
 ### npm
 
-```npm install react-metamask-avatar```
+```bash
+npm install react-metamask-avatar @metamask/jazzicon
+```
 
 ### yarn
 
-```yarn add react-metamask-avatar```
+```bash
+yarn add react-metamask-avatar @metamask/jazzicon
+```
+
+### pnpm
+
+```bash
+pnpm add react-metamask-avatar @metamask/jazzicon
+```
+
+**Note:** `@metamask/jazzicon` is a peer dependency.
 
 ## Props ℹ️
 
@@ -102,3 +122,7 @@ export const App: React.FunctionComponent = () => {
     )
 }
 ```
+
+## License 📄
+
+MIT
