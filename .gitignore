@@ -14,3 +14,4 @@ coverage/
 .yarn/install-state.gz
 .idea
 .DS_Store
+CLAUDE.md
